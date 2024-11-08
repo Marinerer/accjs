@@ -2,8 +2,8 @@
 import fs from 'fs-extra'
 import path from 'pathe'
 import fg from 'fast-glob'
-import { createFileMover, moveFile } from '../index'
-import { FileMoverError } from '../utils'
+import { createFileMover, moveFile } from '../src/index'
+import { FileMoverError } from '../src/utils'
 
 // Mock fs-extra and path modules
 jest.mock('pathe')
@@ -171,7 +171,7 @@ describe('Move File', () => {
 	// 测试错误处理
 	describe('Error Handling', () => {
 		it('should handle ENOENT error for source path', async () => {
-			mockFg.mockResolvedValue((...args) => Promise<[]>)
+			mockFg.mockResolvedValue((...args) => [])
 
 			const operator = createFileMover({
 				cwd: '/test',
