@@ -20,7 +20,7 @@ describe('Move File', () => {
 		// 测试前重置所有 mock
 		jest.clearAllMocks()
 		jest.resetModules()
-		// Setup default mock implementations
+		// 设置默认的模拟实现
 		mockFs.stat.mockResolvedValue({ isDirectory: () => false })
 		mockFs.copy.mockResolvedValue(undefined)
 		mockFs.remove.mockResolvedValue(undefined)
@@ -75,33 +75,38 @@ describe('Move File', () => {
 			)
 		})
 
-		/* it('should move a glob successfully', async () => {
-			mockFg.mockResolvedValue((...args) =>
-				Promise.resolve([
-					'/root/source/file1.txt',
-					'/root/source/file2.txt',
-					'/root/source/file3.txt',
-				])
-			)
+		it('should move a glob successfully', async () => {
+			mockPath.relative.mockImplementation((p1, p2) => p2.replace(p1, '').replace(/^\//, ''))
+			mockFg.mockImplementation((...args) => ['/root/source/file1.txt', '/root/source/file2.txt'])
+			const error = new Error('ENOENT') as NodeJS.ErrnoException
+			error.code = 'ENOENT'
+			mockFs.stat.mockRejectedValueOnce(error)
 
 			const mover = createFileMover({
 				cwd: '/root',
 				dest: 'dest',
+				base: 'source',
 			})
 
 			await mover.move({
 				'source/*.txt': 'target',
 			})
 
-			// expect(mockFg).toHaveBeenCalledWith(['source/*.txt'], {})
-			// expect(mockFs.copy).toHaveBeenCalledTimes(3)
+			expect(mockFg).toHaveBeenCalledWith('source/*.txt', expect.any(Object))
+			expect(mockFs.copy).toHaveBeenCalledTimes(2)
 			expect(mockFs.copy).toHaveBeenNthCalledWith(
 				1,
 				'/root/source/file1.txt',
-				'/root/dest/file1.txt',
+				'/root/dest/target/file1.txt',
 				expect.any(Object)
 			)
-		}) */
+			expect(mockFs.copy).toHaveBeenNthCalledWith(
+				2,
+				'/root/source/file2.txt',
+				'/root/dest/target/file2.txt',
+				expect.any(Object)
+			)
+		})
 
 		it('should respect force option when moving', async () => {
 			const mover = createFileMover({
