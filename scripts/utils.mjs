@@ -38,7 +38,7 @@ export async function getPackage(libs) {
  * @param {string} type 输出类型
  * @returns
  */
-export function toArgs(args = {}, type = 'string') {
+export function toArgs(args = {}, type = 'array') {
 	const results = Object.entries(args)
 		.filter(([key, value]) => key !== '_' && value !== false)
 		.map(([key, value]) => {

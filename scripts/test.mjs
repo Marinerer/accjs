@@ -7,7 +7,7 @@ const modules = args._
 
 ;(async () => {
 	let regex
-	const _args = toArgs(args)
+	const _args = toArgs(args, 'array')
 
 	try {
 		if (modules?.length) {
