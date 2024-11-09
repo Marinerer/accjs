@@ -68,7 +68,7 @@ class FileMover extends EventEmitter {
 				preserveTimestamps: true,
 			})
 
-			this._emit('copy:complete', source, finalTarget)
+			this._emit('copy:done', source, finalTarget)
 		} catch (err) {
 			throw new FileMoverError(`Failed to copy file`, 'COPY_ERROR', source, target, err as Error)
 		}
@@ -126,7 +126,7 @@ class FileMover extends EventEmitter {
 						await this.cleanEmptyDir(path.dirname(p), path.resolve(this.options.cwd))
 					}
 
-					this._emit('clean:complete', p)
+					this._emit('clean:done', p)
 				} catch (err) {
 					throw new FileMoverError(
 						`Failed to clean file`,

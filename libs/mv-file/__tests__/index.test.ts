@@ -239,7 +239,7 @@ describe('Move File', () => {
 			const copyCompleteSpy = jest.fn()
 
 			mover.on('copy:start', copyStartSpy)
-			mover.on('copy:complete', copyCompleteSpy)
+			mover.on('copy:done', copyCompleteSpy)
 
 			await mover.move({
 				'source/file.txt': 'target/file.txt',
@@ -259,7 +259,7 @@ describe('Move File', () => {
 			const cleanCompleteSpy = jest.fn()
 
 			mover.on('clean:start', cleanStartSpy)
-			mover.on('clean:complete', cleanCompleteSpy)
+			mover.on('clean:done', cleanCompleteSpy)
 
 			await mover.move({
 				'source/file.txt': 'target/file.txt',
