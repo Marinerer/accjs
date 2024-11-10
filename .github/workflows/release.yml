@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     # prevents this action from running on forks
-    if: github.repository == 'Marinerer/accjs'
+    if: github.repository == 'marinerer/accjs'
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +33,7 @@ jobs:
         run: |
           pnpm install --no-frozen-lockfile
           pnpm test -- --coverage
+          pnpm build
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
