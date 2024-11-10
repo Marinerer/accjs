@@ -1,5 +1,7 @@
 # mv-file
 
+[![version](https://img.shields.io/npm/v/mv-file?style=flat-square&logo=npm)](https://www.npmjs.com/package/mv-file)
+
 [English](./README.md) | [中文](./README.zh_CN.md)
 
 A simple and flexible utility for moving files and directories with support for `glob` patterns, concurrent operations, and event handling.

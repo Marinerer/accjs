@@ -1,5 +1,7 @@
 # mv-file
 
+[![version](https://img.shields.io/npm/v/mv-file?style=flat-square&logo=npm)](https://www.npmjs.com/package/mv-file)
+
 [English](./README.md) | [中文](./README.zh_CN.md)
 
 简单灵活的 文件/目录 移动工具，支持 `glob` 模式匹配、并发操作和事件处理。
