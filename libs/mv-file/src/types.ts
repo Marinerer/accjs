@@ -1,26 +1,3 @@
-// 统一的错误类型
-export class FileMoverError extends Error {
-	constructor(
-		message: string,
-		public readonly code: string,
-		public readonly source?: string,
-		public readonly target?: string,
-		public readonly originalError?: Error
-	) {
-		super(message)
-		this.name = 'FileMoverError'
-	}
-}
-
-// 统一的事件类型
-export type FileMoverEvent = {
-	'copy:start': (source: string, target: string) => void
-	'copy:done': (source: string, target: string) => void
-	'clean:start': (path: string) => void
-	'clean:done': (path: string) => void
-	error: (error: FileMoverError) => void
-}
-
 export interface PathMapping {
 	[key: string]: string
 }

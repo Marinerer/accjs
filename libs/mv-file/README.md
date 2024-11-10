@@ -18,7 +18,7 @@ A simple and flexible utility for moving files and directories with support for 
 npm install mv-file
 ```
 
-## Using
+## Usage
 
 ### 1. moveFile
 

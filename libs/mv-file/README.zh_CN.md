@@ -18,7 +18,7 @@
 npm install mv-file
 ```
 
-## Using
+## Usage
 
 ### moveFile
 

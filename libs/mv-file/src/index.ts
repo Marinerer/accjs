@@ -2,9 +2,32 @@ import fs from 'fs-extra'
 import path from 'pathe'
 import fg from 'fast-glob'
 import { EventEmitter } from 'events'
+import { PathMapping, MoveOptions } from './types'
 
-import { FileMoverError, FileMoverEvent, PathMapping, MoveOptions } from './utils'
+// 统一的错误类型
+export class FileMoverError extends Error {
+	constructor(
+		message: string,
+		public readonly code: string,
+		public readonly source?: string,
+		public readonly target?: string,
+		public readonly originalError?: Error
+	) {
+		super(message)
+		this.name = 'FileMoverError'
+	}
+}
 
+// 统一的事件类型
+export type FileMoverEvent = {
+	'copy:start': (source: string, target: string) => void
+	'copy:done': (source: string, target: string) => void
+	'clean:start': (path: string) => void
+	'clean:done': (path: string) => void
+	error: (error: FileMoverError) => void
+}
+
+// FileMover 类
 class FileMover extends EventEmitter {
 	private readonly options: Required<MoveOptions>
 
@@ -213,11 +236,15 @@ class FileMover extends EventEmitter {
 	}
 }
 
+// 导出工厂函数
 export function createFileMover(options?: MoveOptions): FileMover {
 	return new FileMover(options)
 }
 
+// 导出快捷函数
 export async function moveFile(pathMap: PathMapping, options: MoveOptions = {}): Promise<void> {
 	const mover = new FileMover(options)
 	await mover.move(pathMap)
 }
+
+export * from './types'

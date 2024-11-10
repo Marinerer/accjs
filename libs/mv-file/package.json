@@ -1,7 +1,7 @@
 {
 	"name": "mv-file",
 	"version": "0.0.0",
-	"description": "",
+	"description": "A simple and flexible utility for moving files and directories with support for glob patterns, concurrent operations, and event handling.",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
@@ -30,7 +30,13 @@
 		"access": "public",
 		"registry": "https://registry.npmjs.org"
 	},
-	"keywords": [],
+	"keywords": [
+		"mv",
+		"move",
+		"move file",
+		"move directory",
+		"glob"
+	],
 	"author": "Mervin <mengqing723@gmail.com>",
 	"license": "MIT",
 	"repository": {

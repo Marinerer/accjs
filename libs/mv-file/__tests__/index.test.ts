@@ -2,8 +2,7 @@
 import fs from 'fs-extra'
 import path from 'pathe'
 import fg from 'fast-glob'
-import { createFileMover, moveFile } from '../src/index'
-import { FileMoverError } from '../src/utils'
+import { createFileMover, moveFile, FileMoverError } from '../src/index'
 
 // Mock fs-extra and path modules
 jest.mock('pathe')
