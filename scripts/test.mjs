@@ -15,7 +15,8 @@ const modules = args._
 			regex = `(${_mods})/.*\\.(test|spec)\\.[jt]s$`
 		}
 
-		const jestArgs = ['--env', 'node', '--runInBand', ..._args, regex]
+		const jestArgs = ['--env', 'node', '--runInBand', ..._args]
+		if (regex) jestArgs.push(regex)
 		await execa('jest', jestArgs, {
 			stdout: 'inherit',
 			stderr: 'inherit',
