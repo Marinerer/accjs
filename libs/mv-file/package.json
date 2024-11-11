@@ -1,6 +1,6 @@
 {
 	"name": "mv-file",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A simple and flexible utility for moving files and directories with support for glob patterns, concurrent operations, and event handling.",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",

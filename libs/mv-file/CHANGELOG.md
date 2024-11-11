@@ -1,8 +1,14 @@
 # mv-file
 
+## 1.0.3
+
+### Patch Changes 🌟
+
+- docs: Update README
+
 ## 1.0.1
 
-### Patch Changes
+### Patch Changes 🌟
 
 - docs: Update README
 

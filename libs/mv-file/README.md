@@ -1,6 +1,10 @@
 # mv-file
 
 [![version](https://img.shields.io/npm/v/mv-file?style=flat-square&logo=npm)](https://www.npmjs.com/package/mv-file)
+[![codecov](https://codecov.io/gh/Marinerer/accjs/branch/main/graph/badge.svg?token=6JYTSTKYM9)](https://codecov.io/gh/Marinerer/accjs)
+[![release](https://img.shields.io/github/actions/workflow/status/Marinerer/accjs/release.yml?style=flat-square)](https://github.com/Marinerer/accjs/releases)
+[![node.js](https://img.shields.io/node/v/mv-file?style=flat-square&logo=nodedotjs)](https://nodejs.org/en/about/releases/)
+[![license](https://img.shields.io/github/license/Marinerer/accjs?style=flat-square)](https://github.com/Marinerer/accjs)
 
 [English](./README.md) | [中文](./README.zh_CN.md)
 
