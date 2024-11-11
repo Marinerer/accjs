@@ -1,5 +1,11 @@
 # mv-file
 
+## 1.0.4
+
+### Patch Changes
+
+- build: Change package-homepage
+
 ## 1.0.3
 
 ### Patch Changes 🌟
