@@ -93,19 +93,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
 
-      - name: Package.json - Chagne `LAST_RELEASE_COMMIT`
+      - name: 🚦(Package.json) - Change 👷
         if: steps.changesets.outputs.published == 'true'
         run: |
           echo "Update package.json..."
           echo "LAST_RELEASE_COMMIT: $LAST_RELEASE_COMMIT"
           #使用 jq 替换最后发布commit值
           jq ".lastReleaseCommit = \"$LAST_RELEASE_COMMIT\"" package.json > _temp_.json && mv _temp_.json package.json
-
-      - name: Package.json - Commit changes
+      - name: 🚦(Package.json) - Commit 🚀
         if: steps.changesets.outputs.published == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
-          git commit -m "chore: Update last release commit"
+          git commit -m "chore: Update package.json(lastReleaseCommit)"
           git push
