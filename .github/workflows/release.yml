@@ -21,7 +21,7 @@ jobs:
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
-          persist-credentials: true  # 允许在工作流中使用 GitHub 令牌
+          persist-credentials: true # 允许在工作流中使用 GitHub 令牌
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -102,7 +102,7 @@ jobs:
           jq ".lastReleaseCommit = \"$LAST_RELEASE_COMMIT\"" package.json > _temp_.json && mv _temp_.json package.json
 
       - name: Package.json - Commit changes
-        if steps.changesets.outputs.published == 'true'
+        if: steps.changesets.outputs.published == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
