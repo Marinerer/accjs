@@ -6,6 +6,7 @@ on:
       - main
 env:
   CI: true
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }} #!!! 配置 NPM_TOKEN
   PNPM_CACHE_FOLDER: .pnpm-store
   PKG_RELEASE_KEY: lastReleaseCommit # 定义 package.json 最后发布的key
 jobs:
@@ -89,7 +90,7 @@ jobs:
           title: 'chore(deploy): Release'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
 
       - name: Save `LAST_RELEASE_COMMIT` to package.json
         if: steps.changesets.outputs.published == 'true'
