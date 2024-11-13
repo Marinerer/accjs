@@ -96,5 +96,6 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         run: |
           echo "Update package.json..."
+          echo "LAST_RELEASE_COMMIT: $LAST_RELEASE_COMMIT"
           #使用 jq 替换最后发布commit值
-          jq '.lastReleaseCommit = "$LAST_RELEASE_COMMIT"' package.json > _temp_.json && mv _temp_.json package.json
+          jq ".lastReleaseCommit = \"$LAST_RELEASE_COMMIT\"" package.json > _temp_.json && mv _temp_.json package.json
