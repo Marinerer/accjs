@@ -11,13 +11,16 @@
 		"test": "node --experimental-vm-modules scripts/test.mjs",
 		"jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"build": "node scripts/build.mjs",
+		"build:libs": "pnpm -r --filter=./libs/* -- run build",
 		"changeset": "changeset",
 		"changeset:version": "changeset version",
 		"changeset:release": "changeset publish --registry https://registry.npmjs.org",
 		"changelog": "",
+		"releaseCommit": "",
 		"preinstall": "npx only-allow pnpm",
 		"postinstall": "simple-git-hooks"
 	},
+	"lastReleaseCommit": "831970d6526ed75fdc34a129b28668c042720389",
 	"simple-git-hooks": {
 		"pre-commit": "npx lint-staged",
 		"commit-msg": "node scripts/verifyCommit.mjs"

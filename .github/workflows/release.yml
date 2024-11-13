@@ -4,43 +4,79 @@ on:
   push:
     branches:
       - main
-
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+  PKG_RELEASE_KEY: lastReleaseCommit # 定义 package.json 最后发布的key
 jobs:
   release:
     # prevents this action from running on forks
-    if: github.repository == 'marinerer/accjs'
+    if: github.repository == 'Marinerer/accjs'
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - name: checkout code repository
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
+          run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          cache: 'pnpm'
           node-version: 20
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: CI
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: CI:test
         run: |
-          pnpm install --no-frozen-lockfile
           pnpm test -- --coverage
           pnpm build
 
+      - name: CI:build
+        run: pnpm build
+
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+      # 从 package.json 中读取最后发布 commit
+      - name: Get release commit from package.json
+        id: get_pkg_release
+        run: |
+          #使用 jq 工具解析json, 默认已内置. 
+          PKG_RELEASE=$(jq -r '.lastReleaseCommit' package.json)
+          echo "Package Release: $PKG_RELEASE"
+          echo "PKG_RELEASE_COMMIT=$PKG_RELEASE" >> $GITHUB_ENV
+
+      # 获取最后一条以'release:'开头的提交记录的哈希值
+      - name: Get last release commit
+        id: get_last_release
+        run: |
+          # 获取最后一条以 'release: ' 开头的提交记录的哈希值
+          LAST_RELEASE=$(git log --grep='^release: ' --format='%H' -n 1)
+
+          if [ -z "$LAST_RELEASE" ]; then
+            echo "No release commit found."
+            exit 1  # 可以根据需要修改为跳过或失败
+          fi
+
+          echo "Last release commit: $LAST_RELEASE"
+          echo "LAST_RELEASE_COMMIT=$LAST_RELEASE" >> $GITHUB_ENV
+
       - name: Create Release Pull Request or Publish to npm
+        # 如果有新的 `release: ` 提交记录, 则执行发布
+        if: env.LAST_RELEASE_COMMIT != env.PKG_RELEASE_COMMIT
         id: changesets
         uses: changesets/action@v1
         with:
@@ -55,3 +91,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+      - name: Save `LAST_RELEASE_COMMIT` to package.json
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "Update package.json..."
+          #使用 jq 替换最后发布commit值
+          jq '.lastReleaseCommit = "$LAST_RELEASE_COMMIT"' package.json > _temp_.json && mv _temp_.json package.json

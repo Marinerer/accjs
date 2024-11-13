@@ -1,12 +1,17 @@
 {
 	"name": "@accjs/demo",
-	"version": "0.0.1-beta.0",
-	"description": "",
+	"version": "0.0.0",
+	"description": "demo",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"scripts": {
 		"test": "jest",
 		"build": "rimraf dist && tsup index.ts --format=esm,cjs"
+	},
+	"publishConfig": {
+		"access": "public",
+		"scope": "@accjs",
+		"registry": "https://registry.npmjs.org"
 	},
 	"keywords": [],
 	"author": "",
