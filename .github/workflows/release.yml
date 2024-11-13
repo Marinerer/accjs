@@ -40,7 +40,6 @@ jobs:
       - name: CI:test
         run: |
           pnpm test -- --coverage
-          pnpm build
 
       - name: CI:build
         run: pnpm build

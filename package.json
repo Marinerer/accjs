@@ -14,7 +14,7 @@
 		"build:libs": "pnpm -r --filter=./libs/* -- run build",
 		"changeset": "changeset",
 		"changeset:version": "changeset version",
-		"changeset:release": "changeset publish --registry https://registry.npmjs.org",
+		"changeset:release": "changeset publish --registry https://registry.npmjs.org --access public",
 		"changelog": "",
 		"releaseCommit": "",
 		"preinstall": "npx only-allow pnpm",
