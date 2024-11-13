@@ -6,6 +6,7 @@ on:
       - main
 env:
   CI: true
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   PNPM_CACHE_FOLDER: .pnpm-store
   PKG_RELEASE_KEY: lastReleaseCommit # 定义 package.json 最后发布的key
 jobs:
@@ -73,6 +74,12 @@ jobs:
           echo "Last release commit: $LAST_RELEASE"
           echo "LAST_RELEASE_COMMIT=$LAST_RELEASE" >> $GITHUB_ENV
 
+      - name: Print npm NPM_TOKEN
+        run: |
+          echo "NODE_RELEASE_TOKEN: ${{ secrets.NODE_RELEASE_TOKEN }}"
+          echo "NPM_TOKEN: ${{ secrets.NPM_TOKEN }}"
+          # npm whoami
+
       - name: Create Release Pull Request or Publish to npm
         # 如果有新的 `release: ` 提交记录, 则执行发布
         if: env.LAST_RELEASE_COMMIT != env.PKG_RELEASE_COMMIT
@@ -89,7 +96,7 @@ jobs:
           title: 'chore(deploy): Release'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Save `LAST_RELEASE_COMMIT` to package.json
         if: steps.changesets.outputs.published == 'true'
