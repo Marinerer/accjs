@@ -6,7 +6,7 @@ on:
       - main
 env:
   CI: true
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }} #!!! 配置 NPM_TOKEN
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }} #!!! 配置 NPM_TOKEN, 否则changeset Publish失败
   PNPM_CACHE_FOLDER: .pnpm-store
   PKG_RELEASE_KEY: lastReleaseCommit # 定义 package.json 最后发布的key
 jobs:
@@ -21,6 +21,7 @@ jobs:
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+          persist-credentials: true  # 允许在工作流中使用 GitHub 令牌
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -92,10 +93,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
 
-      - name: Save `LAST_RELEASE_COMMIT` to package.json
+      - name: Package.json - Chagne `LAST_RELEASE_COMMIT`
         if: steps.changesets.outputs.published == 'true'
         run: |
           echo "Update package.json..."
           echo "LAST_RELEASE_COMMIT: $LAST_RELEASE_COMMIT"
           #使用 jq 替换最后发布commit值
           jq ".lastReleaseCommit = \"$LAST_RELEASE_COMMIT\"" package.json > _temp_.json && mv _temp_.json package.json
+
+      - name: Package.json - Commit changes
+        if steps.changesets.outputs.published == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: Update last release commit"
+          git push
