@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"test": "jest",
-		"build": "rimraf dist && tsup-node src/index.ts --format=esm,cjs --dts"
+		"build": "rimraf dist && tsup src/index.ts --format=esm,cjs --dts"
 	},
 	"publishConfig": {
 		"access": "public",
