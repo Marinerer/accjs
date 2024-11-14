@@ -6,7 +6,7 @@ on:
       - main
 env:
   CI: true
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }} #!!! 配置 NPM_TOKEN, 否则changeset Publish失败
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }} #⭐ 配置 NPM_TOKEN, 否则changeset Publish失败
   PNPM_CACHE_FOLDER: .pnpm-store
   PKG_RELEASE_KEY: lastReleaseCommit # 定义 package.json 最后发布的key
 jobs:
@@ -52,7 +52,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       # 从 package.json 中读取最后发布 commit
-      - name: Get release commit from package.json
+      - name: 📝 Get release commit from package.json 🔑
         id: get_pkg_release
         run: |
           #使用 jq 工具解析json, 默认已内置. 
@@ -61,7 +61,7 @@ jobs:
           echo "PKG_RELEASE_COMMIT=$PKG_RELEASE" >> $GITHUB_ENV
 
       # 获取最后一条以'release:'开头的提交记录的哈希值
-      - name: Get last release commit
+      - name: 📝 Get last release commit 🔒
         id: get_last_release
         run: |
           # 获取最后一条以 'release: ' 开头的提交记录的哈希值
@@ -75,7 +75,7 @@ jobs:
           echo "Last release commit: $LAST_RELEASE"
           echo "LAST_RELEASE_COMMIT=$LAST_RELEASE" >> $GITHUB_ENV
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request or Publish to npm 🔐
         # 如果有新的 `release: ` 提交记录, 则执行发布
         if: env.LAST_RELEASE_COMMIT != env.PKG_RELEASE_COMMIT
         id: changesets
@@ -106,5 +106,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
-          git commit -m "chore: Update package.json(lastReleaseCommit)"
+          git commit -m "chore: Update last_release_commit(package.json)"
           git push
