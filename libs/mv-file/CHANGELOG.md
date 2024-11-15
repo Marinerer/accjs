@@ -1,5 +1,11 @@
 # mv-file
 
+## 1.0.6
+
+### Patch Changes 🌟
+
+- perf: Improve the process of clear empty directories
+
 ## 1.0.5
 
 ### Patch Changes 🌟
