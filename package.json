@@ -20,7 +20,7 @@
 		"preinstall": "npx only-allow pnpm",
 		"postinstall": "simple-git-hooks"
 	},
-	"lastReleaseCommit": "188b7bbfa3de7d94588106d7fb69972e097532fc",
+	"lastReleaseCommit": "b04b8cffc46201f2f578e065c507f28ebcee84c6",
 	"simple-git-hooks": {
 		"pre-commit": "npx lint-staged",
 		"commit-msg": "node scripts/verifyCommit.mjs"
