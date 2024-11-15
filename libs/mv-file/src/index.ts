@@ -104,7 +104,7 @@ class FileMover extends EventEmitter {
 	 */
 	private async cleanEmptyDir(dir: string, baseDir: string = ''): Promise<void> {
 		try {
-			// 不处理基目录之外的目录
+			// 检查基础目录边界(不处理基目录之外的目录)
 			if (!dir.startsWith(baseDir)) return
 
 			const items = await fs.readdir(dir)
@@ -121,6 +121,20 @@ class FileMover extends EventEmitter {
 				await this.cleanEmptyDir(parentDir, baseDir)
 			}
 		} catch (err) {
+			// 发现目录已不存在，继续检查父目录
+			if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+				if (this.options.verbose) {
+					console.warn(`Warning: (${dir}) already removed`)
+				}
+				// 继续处理父目录
+				const parentDir = path.dirname(dir)
+				if (parentDir !== baseDir) {
+					await this.cleanEmptyDir(parentDir, baseDir)
+				}
+				return
+			}
+
+			// 抛出其他类型错误
 			throw new FileMoverError(
 				`Failed to clean directory`,
 				'CLEAN_ERROR',
